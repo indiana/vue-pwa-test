@@ -1,11 +1,11 @@
 <template>
   <ul>
-    <li v-for="item in getItems" v-bind:key="item.index">{{item.code}}</li>
+    <li v-for="item in items" v-bind:key="item.index">{{item.code}}</li>
   </ul>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'ItemList',
@@ -15,7 +15,14 @@ export default {
     }
   },
   computed: {
+  },
+  methods: {
+    ...mapActions(['getItemsFromDb']),
     ...mapGetters(['getItems'])
+  },
+  async created () {
+    await this.getItemsFromDb()
+    this.items = this.getItems()
   }
 }
 </script>

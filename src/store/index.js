@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import itemsdb from '../idb/items'
 
 export default createStore({
   state: {
@@ -10,11 +11,27 @@ export default createStore({
     }
   },
   mutations: {
-    addItem: (state, data) => {
-      state.items.push({ code: data })
+    addItemAndSave: (state, data) => {
+      const item = { code: data }
+      state.items.push(item)
+      itemsdb.saveItem(item)
+    },
+    clearItems: (state) => {
+      state.items = []
+    },
+    addItem: (state, item) => {
+      state.items.push(item)
     }
   },
   actions: {
+    async getItemsFromDb (state) {
+      this.commit('clearItems')
+      itemsdb.getItems().then((result) => {
+        result.forEach(element => {
+          this.commit('addItem', element)
+        })
+      })
+    }
   },
   modules: {
   }

@@ -13,10 +13,10 @@ export default {
   },
   methods: {
     onEnter: function () {
-      this.addItem(this.scannedCode)
+      this.addItemAndSave(this.scannedCode)
       this.scannedCode = ''
     },
-    ...mapMutations(['addItem'])
+    ...mapMutations(['addItemAndSave'])
   }
 
 }
