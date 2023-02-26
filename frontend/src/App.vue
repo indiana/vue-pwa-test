@@ -1,18 +1,21 @@
 <template>
   <h1>DEMO</h1>
   <ScanCode />
-  <ItemList />
+  <ItemListLocal />
+  <ItemListRemote />
 </template>
 
 <script>
 import ScanCode from './components/ScanCode.vue'
-import ItemList from './components/ItemList.vue'
+import ItemListLocal from './components/ItemListLocal.vue'
+import ItemListRemote from './components/ItemListRemote.vue'
 
 export default {
   name: 'App',
   components: {
     ScanCode,
-    ItemList
+    ItemListLocal,
+    ItemListRemote
   }
 }
 </script>

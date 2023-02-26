@@ -1,14 +1,15 @@
 <template>
+  <h2>Remote items</h2>
   <ul>
     <li v-for="item in items" v-bind:key="item.index">{{item.code}}</li>
   </ul>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import axios from 'axios'
 
 export default {
-  name: 'ItemList',
+  name: 'ItemListRemote',
   data () {
     return {
       items: []
@@ -16,13 +17,13 @@ export default {
   },
   computed: {
   },
-  methods: {
-    ...mapActions(['getItemsFromDb']),
-    ...mapGetters(['getItems'])
-  },
   async created () {
-    await this.getItemsFromDb()
-    this.items = this.getItems()
+    axios.get('http://localhost:5100/items')
+      .then(response => {
+        response.data.forEach(element => {
+          this.items.push(element)
+        })
+      })
   }
 }
 </script>

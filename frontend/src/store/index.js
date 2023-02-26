@@ -25,7 +25,6 @@ export default createStore({
   },
   actions: {
     async getItemsFromDb (state) {
-      this.commit('clearItems')
       itemsdb.getItems().then((result) => {
         result.forEach(element => {
           this.commit('addItem', element)
