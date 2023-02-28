@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   name: 'ScanCode',
   data: () => {
@@ -13,10 +13,12 @@ export default {
   },
   methods: {
     onEnter: function () {
-      this.addItemAndSave(this.scannedCode)
+      this.addRemoteItem(this.scannedCode).then(() => {
+        this.$emit('scanCode')
+      })
       this.scannedCode = ''
     },
-    ...mapMutations(['addItemAndSave'])
+    ...mapActions(['addRemoteItem'])
   }
 
 }

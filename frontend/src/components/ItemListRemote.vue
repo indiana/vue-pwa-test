@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'ItemListRemote',
@@ -15,15 +15,16 @@ export default {
       items: []
     }
   },
-  computed: {
+  methods: {
+    ...mapActions(['getRemoteItemsFromApi']),
+    ...mapGetters(['getRemoteItems']),
+    ...mapMutations(['clearRemoteItems'])
   },
-  async created () {
-    axios.get('http://localhost:5100/items')
-      .then(response => {
-        response.data.forEach(element => {
-          this.items.push(element)
-        })
-      })
+  async mounted () {
+    this.clearRemoteItems()
+    this.getRemoteItemsFromApi().then(() => {
+      this.items = this.getRemoteItems()
+    })
   }
 }
 </script>

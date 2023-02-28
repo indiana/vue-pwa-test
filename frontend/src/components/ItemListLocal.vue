@@ -15,18 +15,16 @@ export default {
       items: []
     }
   },
-  computed: {
-  },
   methods: {
-    ...mapActions(['getItemsFromDb', 'getItemsFromApi']),
-    ...mapGetters(['getItems']),
-    ...mapMutations(['clearItems'])
+    ...mapActions(['getLocalItemsFromDb']),
+    ...mapGetters(['getLocalItems']),
+    ...mapMutations(['clearLocalItems'])
   },
-  async created () {
-    this.clearItems()
-    this.getItemsFromDb().then(
-      this.items = this.getItems()
-    )
+  async mounted () {
+    this.clearLocalItems()
+    this.getLocalItemsFromDb().then(() => {
+      this.items = this.getLocalItems()
+    })
   }
 }
 </script>

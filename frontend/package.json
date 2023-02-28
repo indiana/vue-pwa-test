@@ -13,6 +13,7 @@
     "http-server": "^14.1.1",
     "register-service-worker": "^1.7.2",
     "vue": "^3.2.13",
+    "vue-cli": "^2.9.6",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

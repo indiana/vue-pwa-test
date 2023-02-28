@@ -1,8 +1,8 @@
 <template>
   <h1>DEMO</h1>
-  <ScanCode />
+  <ScanCode @scan-code="forceRefreshRemote" />
   <ItemListLocal />
-  <ItemListRemote />
+  <ItemListRemote :key="itemListRemoteKey" />
 </template>
 
 <script>
@@ -12,6 +12,17 @@ import ItemListRemote from './components/ItemListRemote.vue'
 
 export default {
   name: 'App',
+  data () {
+    return {
+      itemListRemoteKey: 0
+    }
+  },
+  methods: {
+    forceRefreshRemote () {
+      console.log('refreshing')
+      this.itemListRemoteKey += 1
+    }
+  },
   components: {
     ScanCode,
     ItemListLocal,

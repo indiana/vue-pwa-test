@@ -1,34 +1,60 @@
+import axios from 'axios'
 import { createStore } from 'vuex'
 import itemsdb from '../idb/items'
+import paths from '../const/api'
 
 export default createStore({
   state: {
-    items: []
+    localItems: [],
+    remoteitems: []
   },
   getters: {
-    getItems: (state) => {
-      return state.items
+    getLocalItems: (state) => {
+      return state.localItems
+    },
+    getRemoteItems: (state) => {
+      return state.remoteItems
     }
   },
   mutations: {
-    addItemAndSave: (state, data) => {
+    addLocalItemAndSave: (state, data) => {
       const item = { code: data }
-      state.items.push(item)
+      state.localItems.push(item)
       itemsdb.saveItem(item)
     },
-    clearItems: (state) => {
-      state.items = []
+    clearLocalItems: (state) => {
+      state.localItems = []
     },
-    addItem: (state, item) => {
-      state.items.push(item)
+    clearRemoteItems: (state) => {
+      state.remoteItems = []
+    },
+    addLocalItem: (state, item) => {
+      state.localItems.push(item)
+    },
+    addRemoteItem: (state, item) => {
+      state.remoteItems.push(item)
     }
   },
   actions: {
-    async getItemsFromDb (state) {
+    async getLocalItemsFromDb (state) {
       itemsdb.getItems().then((result) => {
         result.forEach(element => {
-          this.commit('addItem', element)
+          this.commit('addLocalItem', element)
         })
+      })
+    },
+    async getRemoteItemsFromApi (state) {
+      axios.get(paths.item.list).then(response => {
+        response.data.forEach(element => {
+          this.commit('addRemoteItem', element)
+        })
+      })
+    },
+    async addRemoteItem (state, data) {
+      axios.post(paths.item.add, { code: data }).then(() => {
+        this.commit('addRemoteItem', data)
+      }).catch(() => {
+        this.commit('addLocalItemAndSave', data)
       })
     }
   },
