@@ -1,35 +1,24 @@
 <template>
   <h2>Remote items</h2>
   <ul>
-    <li v-for="item in items" v-bind:key="item.index">{{item.code}}</li>
+    <li v-for="item in getRemoteItems" v-bind:key="item.index">{{item.code}}</li>
   </ul>
 </template>
+<script setup>
+import { onMounted, computed } from 'vue'
+import { useStore } from 'vuex'
 
-<script>
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+const store = useStore()
 
-export default {
-  name: 'ItemListRemote',
-  data () {
-    return {
-      items: []
-    }
-  },
-  methods: {
-    ...mapActions(['getRemoteItemsFromApi']),
-    ...mapGetters(['getRemoteItems']),
-    ...mapMutations(['clearRemoteItems'])
-  },
-  async mounted () {
-    this.clearRemoteItems()
-    this.getRemoteItemsFromApi().then(() => {
-      this.items = this.getRemoteItems()
-    })
-  }
-}
+const getRemoteItems = computed(() => store.getters.getRemoteItems)
+const getRemoteItemsFromApi = () => store.dispatch('getRemoteItemsFromApi')
+const clearRemoteItems = () => store.commit('clearRemoteItems')
+onMounted(() => {
+  clearRemoteItems()
+  getRemoteItemsFromApi()
+})
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;
